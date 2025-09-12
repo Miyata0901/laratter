@@ -16,8 +16,7 @@
             <p>作成日時: {{ $tweet->created_at->format('Y-m-d H:i') }}</p>
             <p>更新日時: {{ $tweet->updated_at->format('Y-m-d H:i') }}</p>
           </div>
-
-          @if (auth()->id() == $tweet->user_id)<!--自分のみに表示_今ログインしているアカウント＝＝ツイート作成者-->
+          @if (auth()->id() == $tweet->user_id)
           <div class="flex mt-4">
             <a href="{{ route('tweets.edit', $tweet) }}" class="text-blue-500 hover:text-blue-700 mr-2">編集</a>
             <form action="{{ route('tweets.destroy', $tweet) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
@@ -27,7 +26,7 @@
             </form>
           </div>
           @endif
-        <div class="flex mt-4">
+          <div class="flex mt-4">
             @if ($tweet->liked->contains(auth()->id()))
             <form action="{{ route('tweets.dislike', $tweet) }}" method="POST">
               @csrf
