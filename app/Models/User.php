@@ -45,7 +45,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function tweets()
+    public function tweets() //tweetsメソッド
     {
     return $this->hasMany(Tweet::class);
     }
