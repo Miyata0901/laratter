@@ -68,4 +68,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'follow_id');
     }
+
+    // 🔽 ブックマーク機能用に追加
+    public function bookmarks()
+    {
+    // belongsToMany の第二引数に、作成した中間テーブル名 'bookmarks' を指定
+    // これにより、Tweetモデルとの多対多リレーションを 'bookmarks' テーブル経由で行う
+        return $this->belongsToMany(Tweet::class, 'bookmarks')->withTimestamps();
+    }
 }

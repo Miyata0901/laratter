@@ -12,7 +12,7 @@ class TweetController extends Controller
      */
     public function index()
     {
-        $tweets = Tweet::with(['user', 'liked'])->latest()->get();
+        $tweets = Tweet::with(['user', 'liked','bookmarkers'])->latest()->get();
         // dd($tweets);
         return view('tweets.index', compact('tweets'));
     }
@@ -44,7 +44,7 @@ class TweetController extends Controller
      */
     public function show(Tweet $tweet)
     {
-        $tweet->load('comments');
+        $tweet->load(['comments','bookmarkers']);
         return view('tweets.show', compact('tweet'));
     }
 
@@ -89,6 +89,7 @@ public function search(Request $request)
 {
 
   $query = Tweet::query();
+  $query->with(['user', 'liked', 'bookmarkers']); 
 
   // キーワードが指定されている場合のみ検索を実行
   if ($request->filled('keyword')) {

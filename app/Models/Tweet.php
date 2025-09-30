@@ -25,4 +25,11 @@ class Tweet extends Model
     {
       return $this->belongsToMany(User::class)->withTimestamps();
     }
+    // 🔽 ブックマーク機能用に追加
+    public function bookmarkers()
+    {
+    // Userモデルへのリレーションを定義し、中間テーブル名 'bookmarks' を明示的に指定
+    return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+    }
+
 }

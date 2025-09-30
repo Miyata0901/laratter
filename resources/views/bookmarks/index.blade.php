@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-      {{ __('Tweet一覧') }}
+      {{ __('ブックマーク一覧') }}
     </h2>
   </x-slot>
 
@@ -52,6 +52,10 @@
               {{-- 🔼🔼🔼 ここまで追加 🔼🔼🔼 --}}
           </div>
           @endforeach
+          <div class="mt-4">
+            {{ $tweets->links() }}
+          </div>
+
         </div>
       </div>
     </div>
