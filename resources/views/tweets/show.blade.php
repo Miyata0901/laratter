@@ -26,6 +26,51 @@
             </form>
           </div>
           @endif
+          <div class="flex mt-4">
+            @if ($tweet->liked->contains(auth()->id()))
+            <form action="{{ route('tweets.dislike', $tweet) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-red-500 hover:text-red-700">dislike {{$tweet->liked->count()}}</button>
+            </form>
+            @else
+            <form action="{{ route('tweets.like', $tweet) }}" method="POST">
+              @csrf
+              <button type="submit" class="text-blue-500 hover:text-blue-700">like {{$tweet->liked->count()}}</button>
+            </form>
+            @endif
+          </div>
+          {{-- 🔽🔽🔽 ブックマーク機能の追加 🔽🔽🔽 --}}
+          <div class="flex mt-2">
+            {{-- ブックマーク済みかどうかを 'bookmarkers' リレーションで判定 --}}
+            @if ($tweet->bookmarkers->contains(auth()->id()))
+            {{-- ブックマーク済み (解除ボタン) --}}
+            <form action="{{ route('tweets.unbookmark', $tweet) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="text-green-500 hover:text-green-700">★ ブックマーク解除</button>
+            </form>
+            @else
+            {{-- ブックマークしていない (追加ボタン) --}}
+            <form action="{{ route('tweets.bookmark', $tweet) }}" method="POST">
+              @csrf
+              <button type="submit" class="text-gray-500 hover:text-gray-700">☆ ブックマーク</button>
+            </form>
+            @endif
+          </div>
+          {{-- 🔼🔼🔼 ここまで追加 🔼🔼🔼 --}}
+          <div class="mt-4">
+            <p class="text-gray-600 dark:text-gray-400 ml-4">comment {{ $tweet->comments->count() }}</p>
+            <a href="{{ route('tweets.comments.create', $tweet) }}" class="text-blue-500 hover:text-blue-700 mr-2">コメントする</a>
+          </div>
+          <div class="mt-4">
+            @foreach ($tweet->comments as $comment)
+            <!-- 🔽 リンク追加 -->
+            <a href="{{ route('tweets.comments.show', [$tweet, $comment]) }}">
+              <p>{{ $comment->comment }} <span class="text-gray-600 dark:text-gray-400 text-sm">{{ $comment->user->name }} {{ $comment->created_at->format('Y-m-d H:i') }}</span></p>
+            </a>
+            @endforeach
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,3 @@
-<!--マイグレーションファイル：テーブルの作成-->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tweets', function (Blueprint $table) {
+        Schema::create('follows', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('tweet');
+            $table->foreignId('follow_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('follower_id')->constrained('users')->cascadeOnDelete();
+            $table->unique(['follow_id', 'follower_id']);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tweets');
+        Schema::dropIfExists('follows');
     }
 };

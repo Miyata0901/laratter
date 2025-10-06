@@ -45,8 +45,35 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function tweets()
+    public function tweets() //tweetsメソッド
     {
     return $this->hasMany(Tweet::class);
+    }
+
+    public function comments()
+    {
+    return $this->hasMany(Comment::class);
+    }
+    
+    public function likes()
+    {
+      return $this->belongsToMany(Tweet::class)->withTimestamps();
+    }
+    public function follows()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follow_id', 'follower_id');
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'follow_id');
+    }
+
+    // 🔽 ブックマーク機能用に追加
+    public function bookmarks()
+    {
+    // belongsToMany の第二引数に、作成した中間テーブル名 'bookmarks' を指定
+    // これにより、Tweetモデルとの多対多リレーションを 'bookmarks' テーブル経由で行う
+        return $this->belongsToMany(Tweet::class, 'bookmarks')->withTimestamps();
     }
 }
